@@ -3,6 +3,7 @@ import asyncio
 
 from bot_settings import Settings
 from token_file import Token
+# message_functions will store responses to chat message triggers.
 import message_functions as mf
 
 settings = Settings()
@@ -23,5 +24,8 @@ async def on_message(message):
     """Chat message triggers"""
     if message.content.startswith(settings.prefix + 'ping'):
         await mf.ping(client, message)
+
+    elif message.content.startswith(settings.prefix + 'mushroom'):
+        await mf.mushroom(client, message)
 
 client.run(token_instance.token)
