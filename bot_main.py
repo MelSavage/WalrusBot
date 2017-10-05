@@ -22,12 +22,17 @@ async def on_ready():
 @client.event
 async def on_message(message):
     """Chat message triggers"""
+    # %ping
     if message.content.startswith(settings.prefix + 'ping'):
         await mf.ping(client, message)
-
+    # %mushroom
     elif message.content.startswith(settings.prefix + 'mushroom'):
         await mf.mushroom(client, message)
+    # %walrus        
     elif message.content.startswith(settings.prefix + 'walrus'):
-        await mf.walrus(client,message)
+        await mf.walrus(client, message)
+    # %angry8ball
+    elif message.content.startswith(settings.prefix + 'angry8ball'):
+        await mf.angry8ball(client, message)
 
 client.run(token_instance.token)
