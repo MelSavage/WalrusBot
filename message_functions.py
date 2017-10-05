@@ -10,6 +10,11 @@ async def mushroom(client, message):
     with open(image_path, 'rb') as f:
         await client.send_file(message.channel, f)
 
+async def walrus(client, message):
+    image_path = image_picker('walrus', 47)
+    with open (image_path, 'rb') as f:
+        await client.send_file(message.channel, f)
+
 def image_picker(folder, num_pictures):
     """
     Generate address for image dynamically. Needs subfolder name and

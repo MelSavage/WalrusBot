@@ -27,5 +27,7 @@ async def on_message(message):
 
     elif message.content.startswith(settings.prefix + 'mushroom'):
         await mf.mushroom(client, message)
+    elif message.content.startswith(settings.prefix + 'walrus'):
+        await mf.walrus(client,message)
 
 client.run(token_instance.token)
