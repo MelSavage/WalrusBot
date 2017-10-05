@@ -22,8 +22,8 @@ async def angry8ball(client, message):
         answer = await eight_ball_answer()
         await client.send_message(message.channel, answer)
     else:
-        answer = "Ask me a question and I will respond in a sarcastic " \
-                 + "or dismissive manner!"
+        answer = "Ask me a question starting with %angry8ball and I will " + \
+        "respond in a sarcastic or dismissive manner!"
         await client.send_message(message.channel, answer)
 
 # Supporting functions
