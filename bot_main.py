@@ -3,11 +3,12 @@ import asyncio
 
 from bot_settings import Settings
 from token_file import Token
-# message_functions will store responses to chat message triggers.
+from image_picker import ImagePicker
 import message_functions as mf
 
 settings = Settings()
 token_instance = Token()
+image_picker = ImagePicker()
 
 client = discord.Client()
 
@@ -27,10 +28,10 @@ async def on_message(message):
         await mf.ping(client, message)
     # %mushroom
     elif message.content.startswith(settings.prefix + 'mushroom'):
-        await mf.mushroom(client, message)
+        await mf.mushroom(client, message, image_picker)
     # %walrus        
     elif message.content.startswith(settings.prefix + 'walrus'):
-        await mf.walrus(client, message)
+        await mf.walrus(client, message, image_picker)
     # %angry8ball
     elif message.content.startswith(settings.prefix + 'angry8ball'):
         await mf.angry8ball(client, message)
