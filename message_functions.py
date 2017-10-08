@@ -13,7 +13,7 @@ async def mushroom(client, message, image_picker):
         await client.send_file(message.channel, f)
 
 async def walrus(client, message, image_picker):
-    image_path = await image_picker.select_image('walrus', 49)
+    image_path = await image_picker.select_image('walrus', 50)
     with open (image_path, 'rb') as f:
         await client.send_file(message.channel, f)
 

@@ -2,3 +2,4 @@ __pycache__/
 images/
 WalrusBot Notes.txt
 token_file.py
+image_history.json
