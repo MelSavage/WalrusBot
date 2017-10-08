@@ -22,16 +22,19 @@ class ImagePicker():
         10 images picked and save it to .json history file, reroll if selected
         pic is in the history file.
         """
-        history_folder_name = "self.image_history['" + folder + "_history']"
-        history_folder = eval(history_folder_name)
+        history_folder = eval("self.image_history['" + folder + "_history']")
         pic_num = randint(1, num_pictures)
         while pic_num in history_folder:
             pic_num = randint(1, num_pictures)
-        else:
-            history_folder.append(pic_num)
+        history_folder.append(pic_num)
+
+        # history folder only keeps last 10 images.
         if len(history_folder) > 10:
             del history_folder[0]
+            
+        # write image history to .json file after final image selection.
         with open('image_history.json', 'w') as f_obj:
             json.dump(self.image_history, f_obj)
+            
         image_path = "images/" + folder + "/" + str(pic_num) + ".jpg"
         return image_path
