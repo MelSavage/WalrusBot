@@ -27,7 +27,6 @@ class ImagePicker():
 
         # History folder keeps one third of the contents of the folder.
         history_amount = int(len(image_list)/3)
-        print("History amount for " + folder + ". " + str(history_amount))
         while len(self.history_dict[folder]) > history_amount:
             del self.history_dict[folder][0]
 
