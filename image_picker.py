@@ -11,9 +11,6 @@ class ImagePicker():
                 self.history_dict[key] = history_shelf[key]
             except KeyError:
                 print("No history found for " + key + ".")
-            else:
-                print("Loaded history for " + key + ". ")
-                print(self.history_dict[key])
         history_shelf.close()
 
     async def select_image(self, folder):
@@ -30,20 +27,17 @@ class ImagePicker():
 
         # History folder keeps one third of the contents of the folder.
         history_amount = int(len(image_list)/3)
+        print("History amount for " + folder + ". " + str(history_amount))
         while len(self.history_dict[folder]) > history_amount:
             del self.history_dict[folder][0]
 
         # Write image history to shelf file.
         history_shelf = shelve.open("image_shelf")
-        for key in self.history_dict.keys():
-            try:
-                history_shelf[key] = self.history_dict[key]
-            except KeyError:
-                print("No history saved for " + key + ".")
-            else:
-                print("History saved for " + key + ".")
+        try:
+            history_shelf[folder] = self.history_dict[folder]
+        except KeyError:
+            print("No history saved for " + key + ".")
         history_shelf.close()
 
         image_path = ".\\images\\" + folder + "\\" + selected_image
-        print("Returning value for image picker: " + image_path)
         return image_path
