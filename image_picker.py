@@ -5,7 +5,7 @@ class ImagePicker():
     """Methods and settings related to random selection of images."""
     def __init__(self):
         history_shelf = shelve.open("image_shelf")
-        self.history_dict = {"shroom": [], "walrus": []}
+        self.history_dict = {"shroom": [], "walrus": [], "banana": []}
         for key in history_shelf.keys():
             try:
                 self.history_dict[key] = history_shelf[key]
