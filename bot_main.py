@@ -20,8 +20,9 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
-    game_name = "- type %help to Taste the Walrus!"
-    await client.change_presence(game=discord.Game(name=game_name))
+    game_name = "- type {0}help to Taste the Walrus!"
+    await client.change_presence(game=discord.Game(name=game_name.format(
+        settings.prefix)))
 
 @client.event
 async def on_message(message):
