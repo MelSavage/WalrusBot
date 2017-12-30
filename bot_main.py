@@ -1,4 +1,4 @@
-import discord, asyncio, logging
+import discord, asyncio, logging, tweepy
 
 from bot_settings import Settings
 from token_file import Token
@@ -12,6 +12,26 @@ token_instance = Token()
 image_picker = ImagePicker()
 
 client = discord.Client()
+
+auth = tweepy.OAuthHandler(token_instance.twt_consumer_key,
+                           token_instance.twt_consumer_secret)
+auth.set_access_token(token_instance.twt_access_token,
+                      token_instance.twt_access_secret)
+
+class MyStreamListener(tweepy.StreamListener):
+
+    def on_status(self, status):
+        """What to do when a new status is streamed in."""
+        if not status.text.startswith('RT @WarframeAlerts'):
+            print(status.text)
+            sendmsg = asyncio.run_coroutine_threadsafe(client.send_message(
+                discord.Object(id='395778918420054018'), status.text),
+                client.loop)
+            # WarframeAlerts 395778918420054018
+            # Isentil        579197344
+
+    def on_error(self, status):
+        print('Error: ', status)
 
 @client.event
 async def on_ready():
@@ -51,5 +71,9 @@ async def on_message(message):
     # %help
     elif message.content.startswith(settings.prefix + 'help'):
         await mf.help(client, message, settings)
+
+twitter_streamer = MyStreamListener()
+my_stream = tweepy.Stream(auth, twitter_streamer)
+my_stream.filter(follow=['1344755923'], async=True)
 
 client.run(token_instance.token)
