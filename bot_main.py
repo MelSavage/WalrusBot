@@ -22,13 +22,15 @@ class MyStreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
         """What to do when a new status is streamed in."""
+        search_strings = ['(Aura)', 'Reactor', 'Catalyst', 'Exilus', 'Nitain']
         if not status.text.startswith('RT @WarframeAlerts'):
-            print(status.text)
-            sendmsg = asyncio.run_coroutine_threadsafe(client.send_message(
-                discord.Object(id='395778918420054018'), status.text),
-                client.loop)
-            # WarframeAlerts 395778918420054018
-            # Isentil        579197344
+            if any(s in status.text for s in search_strings):
+                print("\n--- Important Alert Detected! ---")
+                sendmsg = asyncio.run_coroutine_threadsafe(client.send_message(
+                    discord.Object(id='395778918420054018'), status.text),
+                    client.loop)
+                sendmsg.result(1200)
+            print(status.text, '\n')
 
     def on_error(self, status):
         print('Error: ', status)
@@ -75,5 +77,7 @@ async def on_message(message):
 twitter_streamer = MyStreamListener()
 my_stream = tweepy.Stream(auth, twitter_streamer)
 my_stream.filter(follow=['1344755923'], async=True)
+    # WarframeAlerts 1344755923
+    # Isentil        579197344
 
 client.run(token_instance.token)
