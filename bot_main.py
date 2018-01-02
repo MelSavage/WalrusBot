@@ -22,9 +22,8 @@ class MyStreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
         """What to do when a new status is streamed in."""
-        search_strings = ['(Aura)', 'Reactor', 'Catalyst', 'Exilus', 'Nitain']
         if not status.text.startswith('RT @WarframeAlerts'):
-            if any(s in status.text for s in search_strings):
+            if any(s in status.text for s in settings.twt_search_strings):
                 print("\n--- Important Alert Detected! ---")
                 sendmsg = asyncio.run_coroutine_threadsafe(client.send_message(
                     discord.Object(id='395778918420054018'), status.text),
