@@ -4,6 +4,7 @@ from bot_settings import Settings
 from token_file import Token
 from image_picker import ImagePicker
 import message_functions as mf
+import twitter_streamer as twitter
 
 logging.basicConfig(level=logging.INFO)
 
@@ -13,31 +14,7 @@ image_picker = ImagePicker()
 
 client = discord.Client()
 
-auth = tweepy.OAuthHandler(token_instance.twt_consumer_key,
-                           token_instance.twt_consumer_secret)
-auth.set_access_token(token_instance.twt_access_token,
-                      token_instance.twt_access_secret)
-
-class MyStreamListener(tweepy.StreamListener):
-
-    def on_status(self, status):
-        """What to do when a new status is streamed in."""
-        if not status.text.startswith('RT @WarframeAlerts'):
-            if any(s in status.text for s in settings.twt_search_strings):
-                print("\n--- Important Alert Detected! ---")
-                sendmsg = asyncio.run_coroutine_threadsafe(client.send_message(
-                    discord.Object(id='395778918420054018'), status.text),
-                    client.loop)
-                sendmsg.result(1200)
-            print(status.text, '\n')
-
-    def on_error(self, status_code):
-        print('Error: ', status_code)
-        return True # Maybe will prevent stream from dying?
-
-    def on_timeout(self):
-        print("Timeout...")
-        return True # Maybe will prevent stream from dying?
+tweepy_instance = twitter.MyStreamListener(client, settings, token_instance)
 
 @client.event
 async def on_ready():
@@ -77,15 +54,5 @@ async def on_message(message):
     # %help
     elif message.content.startswith(settings.prefix + 'help'):
         await mf.help(client, message, settings)
-
-twitter_streamer = MyStreamListener()
-my_stream = tweepy.Stream(auth, twitter_streamer)
-try:
-    my_stream.filter(follow=['1344755923'], async=True)
-    # WarframeAlerts 1344755923
-    # Isentil        579197344
-except (ReadTimeoutError, socket.timeout) as exc:
-    print('\nTimeout caught, attempting to restart...')
-    my_stream.filter(follow=['1344755923'], async=True)
 
 client.run(token_instance.token)
