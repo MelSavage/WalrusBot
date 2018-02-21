@@ -31,8 +31,13 @@ class MyStreamListener(tweepy.StreamListener):
                 sendmsg.result(1200)
             print(status.text, '\n')
 
-    def on_error(self, status):
-        print('Error: ', status)
+    def on_error(self, status_code):
+        print('Error: ', status_code)
+        return True # Maybe will prevent stream from dying?
+
+    def on_timeout(self):
+        print("Timeout...")
+        return True # Maybe will prevent stream from dying?
 
 @client.event
 async def on_ready():
@@ -75,8 +80,12 @@ async def on_message(message):
 
 twitter_streamer = MyStreamListener()
 my_stream = tweepy.Stream(auth, twitter_streamer)
-my_stream.filter(follow=['1344755923'], async=True)
+try:
+    my_stream.filter(follow=['1344755923'], async=True)
     # WarframeAlerts 1344755923
     # Isentil        579197344
+except (ReadTimeoutError, socket.timeout) as exc:
+    print('\nTimeout caught, attempting to restart...')
+    my_stream.filter(follow=['1344755923'], async=True)
 
 client.run(token_instance.token)
