@@ -1,4 +1,8 @@
-import discord, asyncio, logging, tweepy
+#! python3
+## WalrusBot - Discord bot for Killer Walrus Gaming, requires discord.py and
+## tweepy libraries.
+
+import discord, asyncio, logging
 
 from bot_settings import Settings
 from token_file import Token
@@ -9,6 +13,7 @@ import twitter_streamer as twitter
 logging.basicConfig(level=logging.INFO)
 
 settings = Settings()
+# see README.txt for info on creating Token class
 token_instance = Token()
 image_picker = ImagePicker()
 
